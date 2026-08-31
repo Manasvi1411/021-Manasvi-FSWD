@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>New Year Countdown</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .container {
+            width: 500px;
+            margin: auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        #countdown {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>New Year Countdown</h1>
+
+        <div id="countdown"></div>
+
+    </div>
+
+    <script>
+
+        function countdown() {
+
+            let now = new Date();
+
+            let newYear = new Date(now.getFullYear() + 1, 0, 1);
+
+            let difference = newYear - now;
+
+            let days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+            let hours = Math.floor(
+                (difference / (1000 * 60 * 60)) % 24
+            );
+
+            let minutes = Math.floor(
+                (difference / (1000 * 60)) % 60
+            );
+
+            let seconds = Math.floor(
+                (difference / 1000) % 60
+            );
+
+            document.getElementById("countdown").innerHTML =
+                days + " Days " +
+                hours + " Hours " +
+                minutes + " Minutes " +
+                seconds + " Seconds";
+        }
+
+        countdown();
+
+        setInterval(countdown, 1000);
+
+    </script>
+
+</body>
+</html>

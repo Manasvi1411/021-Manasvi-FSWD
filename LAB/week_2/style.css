@@ -1,0 +1,191 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+
+    background-color: #f4f4f1;
+
+    font-family: Arial, sans-serif;
+    color: #222;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Main heading */
+
+h1 {
+    font-size: 36px;
+    margin: 0 0 30px;
+    text-align: center;
+    letter-spacing: -1px;
+}
+
+/* Tabs */
+
+nav {
+    margin-bottom: 0;
+}
+
+nav a {
+    display: inline-block;
+
+    padding: 13px 28px;
+
+    text-decoration: none;
+
+    color: #555;
+    background-color: #e5e5e0;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    border-radius: 8px 8px 0 0;
+}
+
+nav a:hover {
+    background-color: #d8d8d3;
+}
+
+nav a.active {
+    background-color: white;
+    color: #222;
+}
+
+/* Form */
+
+form {
+    width: 650px;
+    max-width: 100%;
+
+    padding: 35px 40px;
+
+    background-color: white;
+
+    border-radius: 0 12px 12px 12px;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 30px;
+
+    font-size: 24px;
+}
+
+/* Labels */
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Inputs */
+
+input[type="text"],
+input[type="date"],
+input[type="tel"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+
+    padding: 11px 12px;
+
+    margin-top: 7px;
+
+    border: 1px solid #d6d6d6;
+    border-radius: 7px;
+
+    background-color: #fafafa;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+
+    outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #333;
+    background-color: white;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Gender */
+
+input[type="radio"] {
+    accent-color: #222;
+}
+
+input[type="radio"] + label {
+    font-weight: normal;
+    margin-left: 3px;
+}
+
+/* Color */
+
+input[type="color"] {
+    width: 50px;
+    height: 35px;
+
+    margin-top: 7px;
+
+    cursor: pointer;
+}
+
+/* Range */
+
+input[type="range"] {
+    width: 100%;
+    accent-color: #222;
+}
+
+/* Fieldsets */
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    padding: 20px;
+}
+
+legend {
+    padding: 0 8px;
+    font-weight: bold;
+}
+
+/* Button */
+
+button {
+    display: block;
+
+    margin: 15px auto 0;
+
+    padding: 12px 35px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #222;
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #444;
+}

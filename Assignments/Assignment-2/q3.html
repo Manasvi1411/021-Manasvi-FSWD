@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question 3 - Student Registration Form (Controlled Components)</title>
 
-    <!-- React 18 & Babel CDN -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -99,7 +98,7 @@
             font-weight: 500;
         }
 
-        /* Password strength bar */
+        
         .strength-meter {
             margin-top: 8px;
         }
@@ -158,7 +157,7 @@
             background-color: #e2e8f0;
         }
 
-        /* Success card */
+       
         .success-card {
             background-color: #f0fff4;
             border: 2px solid #9ae6b4;
@@ -222,7 +221,7 @@
         const { useState } = React;
 
         function StudentRegistrationForm() {
-            // Controlled component state for each field
+           
             const [formData, setFormData] = useState({
                 name: "",
                 email: "",
@@ -231,16 +230,15 @@
                 confirmPassword: ""
             });
 
-            // Errors state for displaying messages below fields
+            
             const [errors, setErrors] = useState({});
 
-            // Touched state to know if user interacted with field
+           
             const [touched, setTouched] = useState({});
 
-            // State to store submitted student details upon success
+            
             const [submittedData, setSubmittedData] = useState(null);
 
-            // Compute password strength
             const evaluatePasswordStrength = (pwd) => {
                 if (!pwd) return { score: 0, text: "", color: "#e2e8f0", width: "0%" };
                 let score = 0;
@@ -265,7 +263,7 @@
 
             const passwordStrength = evaluatePasswordStrength(formData.password);
 
-            // Field-level validator
+            
             const validateField = (fieldName, value, allValues = formData) => {
                 let error = "";
 
@@ -346,11 +344,11 @@
                 setErrors((prev) => ({ ...prev, [name]: fieldError }));
             };
 
-            // Form submission handler
+            
             const handleSubmit = (e) => {
                 e.preventDefault();
 
-                // Validate every field
+               
                 const newErrors = {};
                 const fields = ["name", "email", "phone", "password", "confirmPassword"];
                 const allTouched = {};
@@ -502,7 +500,7 @@
                                 )}
                             </div>
 
-                            {/* Password */}
+                           
                             <div className="form-group">
                                 <label htmlFor="password">
                                     Password <span className="required">*</span>

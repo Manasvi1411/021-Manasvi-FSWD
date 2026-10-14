@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question 1 - Employee List with Conditional Styling</title>
 
-    <!-- React 18 & Babel CDN -->
+   
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -195,9 +195,9 @@
     <script type="text/babel">
         const { useState } = React;
 
-        // Employee component demonstrating map(), key prop, and conditional styling
+        
         function EmployeeTableApp() {
-            // Array of employee objects: id, name, department, salary
+           
             const [employees] = useState([
                 { id: 101, name: "Alice Johnson", department: "Engineering", salary: 75000 },
                 { id: 102, name: "Bob Smith", department: "Marketing", salary: 45000 },
@@ -209,17 +209,17 @@
                 { id: 108, name: "Hannah Abbott", department: "Engineering", salary: 56000 }
             ]);
 
-            // Threshold for conditional highlighting
+            
             const SALARY_THRESHOLD = 50000;
 
-            // Calculations for summary stats
+            
             const totalEmployees = employees.length;
             const highSalaryEmployees = employees.filter(emp => emp.salary > SALARY_THRESHOLD).length;
             const averageSalary = Math.round(
                 employees.reduce((acc, curr) => acc + curr.salary, 0) / totalEmployees
             );
 
-            // Inline styles for conditional styling
+            
             const highSalaryStyle = {
                 backgroundColor: "#d1fae5",
                 color: "#065f46",
@@ -238,7 +238,7 @@
                         <p>Rendered using React <code>map()</code> with <code>key</code> & conditional styling for salary &gt; ₹50,000</p>
                     </header>
 
-                    {/* Summary Statistics */}
+                    
                     <div className="stats-grid">
                         <div className="stat-card">
                             <h3>Total Employees</h3>
@@ -254,7 +254,7 @@
                         </div>
                     </div>
 
-                    {/* Employee Table */}
+                    
                     <div className="table-responsive">
                         <table>
                             <thead>
@@ -267,7 +267,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* Rendering array of employee objects with map() and key */}
+                               
                                 {employees.map((employee) => {
                                     const isAbove50k = employee.salary > SALARY_THRESHOLD;
 
@@ -295,7 +295,7 @@
                         </table>
                     </div>
 
-                    {/* Table Legend */}
+                
                     <div className="legend">
                         <span>
                             <span className="legend-indicator indicator-high"></span>
@@ -310,7 +310,7 @@
             );
         }
 
-        // Mount React application
+      
         const root = ReactDOM.createRoot(document.getElementById("root"));
         root.render(<EmployeeTableApp />);
     </script>

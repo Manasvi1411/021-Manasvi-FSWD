@@ -1,50 +1,42 @@
 import React, { useState } from 'react';
 
-/**
- * Question 2:
- * React code to demonstrate event handling:
- * 1. A box that changes its colour on mouse over and mouse out
- * 2. Displays a message on double click
- * 3. Shows the key pressed in an input field (onKeyDown)
- * 4. A form whose onSubmit handler uses preventDefault() and shows an alert.
- */
 export default function EventHandlingDemo() {
-  // 1. Box State: Mouse Over & Mouse Out (color state), and Double Click message
+  
   const [isHovered, setIsHovered] = useState(false);
   const [boxMessage, setBoxMessage] = useState('Double-click the box above to see an event message.');
 
-  // 2. Keyboard State: onKeyDown key capture
+ 
   const [keyPressed, setKeyPressed] = useState('None');
   const [keyCode, setKeyCode] = useState('-');
 
-  // 3. Form State: onSubmit with preventDefault()
+ 
   const [feedbackInput, setFeedbackInput] = useState('');
 
-  // Handler: Mouse enter / hover
+  
   const handleMouseEnter = () => {
     setIsHovered(true);
   };
 
-  // Handler: Mouse leave / out
+ 
   const handleMouseLeave = () => {
     setIsHovered(false);
   };
 
-  // Handler: Double click
+  
   const handleDoubleClick = () => {
     const timestamp = new Date().toLocaleTimeString();
     setBoxMessage(`🎉 Box double-clicked at ${timestamp}! (onDoubleClick event triggered)`);
   };
 
-  // Handler: onKeyDown
+ 
   const handleKeyDown = (event) => {
     setKeyPressed(event.key === ' ' ? 'Space' : event.key);
     setKeyCode(event.code || event.key);
   };
 
-  // Handler: Form onSubmit with preventDefault()
+  
   const handleSubmit = (event) => {
-    // Prevent default browser reload
+    
     event.preventDefault();
 
     if (!feedbackInput.trim()) {
@@ -52,14 +44,14 @@ export default function EventHandlingDemo() {
       return;
     }
 
-    // Alert displaying submitted input
+   
     alert(
       `✅ Form Submitted Successfully!\n` +
       `Default page reload was prevented using e.preventDefault().\n\n` +
       `Input Value: "${feedbackInput}"`
     );
 
-    // Reset input
+   
     setFeedbackInput('');
   };
 
@@ -86,7 +78,7 @@ export default function EventHandlingDemo() {
     <div style={{ maxWidth: '800px', margin: '30px auto', fontFamily: 'Segoe UI, sans-serif' }}>
       <h2 style={{ textAlign: 'center', color: '#1a365d' }}>React Event Handling Demo</h2>
 
-      {/* Part 1: Mouse Over, Mouse Out & Double Click Box */}
+      {}
       <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '20px', margin: '20px 0' }}>
         <h3 style={{ color: '#2b6cb0', marginBottom: '15px' }}>1. Mouse Hover & Double Click Box</h3>
         <div
@@ -103,7 +95,7 @@ export default function EventHandlingDemo() {
         </div>
       </div>
 
-      {/* Part 2: onKeyDown on Input Field */}
+      {}
       <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '20px', margin: '20px 0' }}>
         <h3 style={{ color: '#2b6cb0', marginBottom: '15px' }}>2. Key Press Detection (onKeyDown)</h3>
         <input
@@ -117,7 +109,7 @@ export default function EventHandlingDemo() {
         </div>
       </div>
 
-      {/* Part 3: Form onSubmit with preventDefault() */}
+      {}
       <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '20px', margin: '20px 0' }}>
         <h3 style={{ color: '#2b6cb0', marginBottom: '15px' }}>3. Form onSubmit with preventDefault()</h3>
         <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px' }}>

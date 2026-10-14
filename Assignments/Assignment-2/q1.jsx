@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 
-/**
- * Question 1:
- * React code to display an array of employee objects (id, name, department, salary)
- * as an HTML table by rendering the list with map() and key.
- * Highlight rows with salary above 50000 using conditional styling.
- */
 export default function EmployeeTable() {
-  // Array of employee objects
+
   const [employees] = useState([
     { id: 101, name: 'Alice Johnson', department: 'Engineering', salary: 75000 },
     { id: 102, name: 'Bob Smith', department: 'Marketing', salary: 45000 },
@@ -21,7 +15,7 @@ export default function EmployeeTable() {
 
   const SALARY_THRESHOLD = 50000;
 
-  // Conditional styles
+ 
   const highSalaryStyle = {
     backgroundColor: '#d1fae5',
     color: '#065f46',
@@ -69,7 +63,7 @@ export default function EmployeeTable() {
           </tr>
         </thead>
         <tbody>
-          {/* Rendering the list using map() and key */}
+          
           {employees.map((employee) => {
             const isAbove50k = employee.salary > SALARY_THRESHOLD;
 

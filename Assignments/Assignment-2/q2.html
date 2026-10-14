@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question 2 - React Event Handling</title>
 
-    <!-- React 18 & Babel CDN -->
+    
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -117,7 +117,7 @@
             justify-content: center;
         }
 
-        /* Keyboard input area */
+      
         .key-input-group {
             display: flex;
             flex-direction: column;
@@ -168,7 +168,7 @@
             color: #4a5568;
         }
 
-        /* Form area */
+       
         .demo-form {
             display: flex;
             flex-direction: column;
@@ -214,61 +214,61 @@
         const { useState } = React;
 
         function EventHandlingApp() {
-            // 1. Box State: Mouse Over & Mouse Out (color state), and Double Click message
+            
             const [isHovered, setIsHovered] = useState(false);
             const [boxMessage, setBoxMessage] = useState("Double-click the box above to see an event message.");
 
-            // 2. Keyboard State: onKeyDown key capture
+           
             const [keyPressed, setKeyPressed] = useState("None");
             const [keyCode, setKeyCode] = useState("-");
 
-            // 3. Form State: onSubmit with preventDefault()
+            
             const [feedbackInput, setFeedbackInput] = useState("");
 
-            // Handler: Mouse enter / hover
+            
             const handleMouseEnter = () => {
                 setIsHovered(true);
             };
 
-            // Handler: Mouse leave / out
+           
             const handleMouseLeave = () => {
                 setIsHovered(false);
             };
 
-            // Handler: Double click
+           
             const handleDoubleClick = () => {
                 const timestamp = new Date().toLocaleTimeString();
                 setBoxMessage(`🎉 Box double-clicked at ${timestamp}! (onDoubleClick triggered)`);
             };
 
-            // Handler: onKeyDown
+           
             const handleKeyDown = (event) => {
                 setKeyPressed(event.key === " " ? "Space" : event.key);
                 setKeyCode(event.code || event.key);
             };
 
-            // Handler: Form onSubmit with preventDefault()
+           
             const handleSubmit = (event) => {
-                // Prevent default page refresh
+                
                 event.preventDefault();
 
                 if (!feedbackInput.trim()) {
-                    alert("⚠️ Please enter some text before submitting the form!");
+                    alert(" Please enter some text before submitting the form!");
                     return;
                 }
 
-                // Show alert displaying submitted data
+                
                 alert(
                     `✅ Form Submitted Successfully!\n` +
                     `Default page reload was prevented using e.preventDefault().\n\n` +
                     `Input Value: "${feedbackInput}"`
                 );
 
-                // Clear input after submission
+               
                 setFeedbackInput("");
             };
 
-            // Dynamic Box Style based on mouse over / mouse out
+           
             const boxStyle = {
                 backgroundColor: isHovered ? "#38a169" : "#3182ce",
                 transform: isHovered ? "scale(1.04)" : "scale(1)"
@@ -281,7 +281,7 @@
                         <p>Demonstrating mouseover, mouseout, double-click, onKeyDown, and form onSubmit with preventDefault()</p>
                     </header>
 
-                    {/* Section 1: Box Mouse Over, Mouse Out & Double Click */}
+                   
                     <div className="section-card">
                         <h2>1. Mouse Events & Double Click on a Box</h2>
                         <div className="box-wrapper">
@@ -302,7 +302,7 @@
                         </div>
                     </div>
 
-                    {/* Section 2: Input Field with onKeyDown */}
+                
                     <div className="section-card">
                         <h2>2. Key Press Detection (onKeyDown)</h2>
                         <div className="key-input-group">
@@ -322,7 +322,7 @@
                         </div>
                     </div>
 
-                    {/* Section 3: Form onSubmit with preventDefault() */}
+                   
                     <div className="section-card">
                         <h2>3. Form Submission with preventDefault()</h2>
                         <form className="demo-form" onSubmit={handleSubmit}>
@@ -339,7 +339,7 @@
                                 </button>
                             </div>
                             <p className="form-note">
-                                💡 When you click Submit or press Enter, <code>e.preventDefault()</code> prevents browser reload and triggers a JavaScript alert.
+                                 When you click Submit or press Enter, <code>e.preventDefault()</code> prevents browser reload and triggers a JavaScript alert.
                             </p>
                         </form>
                     </div>

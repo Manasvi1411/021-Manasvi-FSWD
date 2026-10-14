@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 3 - Student Registration Form (Controlled Components)</title>
+
+    <!-- React 18 & Babel CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f9;
+            color: #2d3748;
+            padding: 40px 15px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+            padding: 35px 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            color: #1a365d;
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1.5px solid #cbd5e0;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+        }
+
+        .form-control.input-error {
+            border-color: #e53e3e;
+            background-color: #fff5f5;
+        }
+
+        .form-control.input-success {
+            border-color: #38a169;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 12.5px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+        }
+
+        /* Password strength bar */
+        .strength-meter {
+            margin-top: 8px;
+        }
+
+        .strength-bar-bg {
+            height: 6px;
+            background-color: #edf2f7;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .strength-bar-fill {
+            height: 100%;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .strength-label {
+            font-size: 12px;
+            margin-top: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 13px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: #3182ce;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2b6cb0;
+        }
+
+        .btn-secondary {
+            background-color: #edf2f7;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* Success card */
+        .success-card {
+            background-color: #f0fff4;
+            border: 2px solid #9ae6b4;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 45px;
+            color: #38a169;
+            margin-bottom: 10px;
+        }
+
+        .success-card h2 {
+            color: #22543d;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+
+        .success-card p {
+            color: #2f855a;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #c6f6d5;
+            margin-bottom: 20px;
+        }
+
+        .details-table th, .details-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .details-table th {
+            background-color: #e6fffa;
+            color: #234e52;
+            width: 40%;
+        }
+
+        .details-table td {
+            color: #2d3748;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function StudentRegistrationForm() {
+            // Controlled component state for each field
+            const [formData, setFormData] = useState({
+                name: "",
+                email: "",
+                phone: "",
+                password: "",
+                confirmPassword: ""
+            });
+
+            // Errors state for displaying messages below fields
+            const [errors, setErrors] = useState({});
+
+            // Touched state to know if user interacted with field
+            const [touched, setTouched] = useState({});
+
+            // State to store submitted student details upon success
+            const [submittedData, setSubmittedData] = useState(null);
+
+            // Compute password strength
+            const evaluatePasswordStrength = (pwd) => {
+                if (!pwd) return { score: 0, text: "", color: "#e2e8f0", width: "0%" };
+                let score = 0;
+                if (pwd.length >= 8) score += 1;
+                if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) score += 1;
+                if (/\d/.test(pwd)) score += 1;
+                if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)) score += 1;
+
+                switch (score) {
+                    case 1:
+                        return { score: 1, text: "Weak", color: "#e53e3e", width: "25%" };
+                    case 2:
+                        return { score: 2, text: "Fair", color: "#dd6b20", width: "50%" };
+                    case 3:
+                        return { score: 3, text: "Good", color: "#3182ce", width: "75%" };
+                    case 4:
+                        return { score: 4, text: "Strong", color: "#38a169", width: "100%" };
+                    default:
+                        return { score: 0, text: "Too Short", color: "#e53e3e", width: "15%" };
+                }
+            };
+
+            const passwordStrength = evaluatePasswordStrength(formData.password);
+
+            // Field-level validator
+            const validateField = (fieldName, value, allValues = formData) => {
+                let error = "";
+
+                switch (fieldName) {
+                    case "name":
+                        if (!value.trim()) {
+                            error = "Student name is required.";
+                        } else if (value.trim().length < 3) {
+                            error = "Name must be at least 3 characters.";
+                        } else if (!/^[A-Za-z\s]+$/.test(value)) {
+                            error = "Name should contain only alphabets and spaces.";
+                        }
+                        break;
+
+                    case "email":
+                        if (!value.trim()) {
+                            error = "Email address is required.";
+                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                            error = "Please enter a valid email address (e.g., student@example.com).";
+                        }
+                        break;
+
+                    case "phone":
+                        if (!value.trim()) {
+                            error = "Phone number is required.";
+                        } else if (!/^\d{10}$/.test(value.trim())) {
+                            error = "Phone number must be exactly 10 digits.";
+                        }
+                        break;
+
+                    case "password":
+                        if (!value) {
+                            error = "Password is required.";
+                        } else if (value.length < 8) {
+                            error = "Password must be at least 8 characters long.";
+                        } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])/.test(value)) {
+                            error = "Must include uppercase, lowercase, number, and special character.";
+                        }
+                        break;
+
+                    case "confirmPassword":
+                        if (!value) {
+                            error = "Please confirm your password.";
+                        } else if (value !== allValues.password) {
+                            error = "Passwords do not match.";
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return error;
+            };
+
+            // Controlled input change handler
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                const updatedValues = { ...formData, [name]: value };
+                setFormData(updatedValues);
+
+                // Run validation on the field if it was already touched
+                if (touched[name]) {
+                    const fieldError = validateField(name, value, updatedValues);
+                    setErrors((prev) => ({ ...prev, [name]: fieldError }));
+                }
+
+                // If updating password, also revalidate confirmPassword if touched
+                if (name === "password" && touched.confirmPassword) {
+                    const confirmError = validateField("confirmPassword", formData.confirmPassword, updatedValues);
+                    setErrors((prev) => ({ ...prev, confirmPassword: confirmError }));
+                }
+            };
+
+            // Blur handler to mark field as touched
+            const handleBlur = (e) => {
+                const { name, value } = e.target;
+                setTouched((prev) => ({ ...prev, [name]: true }));
+                const fieldError = validateField(name, value, formData);
+                setErrors((prev) => ({ ...prev, [name]: fieldError }));
+            };
+
+            // Form submission handler
+            const handleSubmit = (e) => {
+                e.preventDefault();
+
+                // Validate every field
+                const newErrors = {};
+                const fields = ["name", "email", "phone", "password", "confirmPassword"];
+                const allTouched = {};
+
+                fields.forEach((field) => {
+                    allTouched[field] = true;
+                    const error = validateField(field, formData[field], formData);
+                    if (error) {
+                        newErrors[field] = error;
+                    }
+                });
+
+                setTouched(allTouched);
+                setErrors(newErrors);
+
+                // If no errors, show submitted details
+                if (Object.keys(newErrors).length === 0) {
+                    setSubmittedData({
+                        ...formData,
+                        submittedAt: new Date().toLocaleString()
+                    });
+                }
+            };
+
+            // Reset form
+            const handleReset = () => {
+                setFormData({
+                    name: "",
+                    email: "",
+                    phone: "",
+                    password: "",
+                    confirmPassword: ""
+                });
+                setErrors({});
+                setTouched({});
+                setSubmittedData(null);
+            };
+
+            return (
+                <div className="form-container">
+                    <header>
+                        <h1>Student Registration Form</h1>
+                        <p>Controlled Components with Real-time Field Validations</p>
+                    </header>
+
+                    {submittedData ? (
+                        /* Success View displaying submitted details */
+                        <div className="success-card">
+                            <div className="success-icon">✓</div>
+                            <h2>Registration Successful!</h2>
+                            <p>Here are the submitted student details:</p>
+
+                            <table className="details-table">
+                                <tbody>
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <td>{submittedData.name}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email Address</th>
+                                        <td>{submittedData.email}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Phone Number</th>
+                                        <td>{submittedData.phone}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Password</th>
+                                        <td>•••••••• (Encrypted / Validated)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Registered On</th>
+                                        <td>{submittedData.submittedAt}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <button className="btn btn-primary" onClick={handleReset}>
+                                Register Another Student
+                            </button>
+                        </div>
+                    ) : (
+                        /* Registration Form */
+                        <form onSubmit={handleSubmit} noValidate>
+                            {/* Name */}
+                            <div className="form-group">
+                                <label htmlFor="name">
+                                    Full Name <span className="required">*</span>
+                                </label>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    name="name"
+                                    placeholder="Enter student's full name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={`form-control ${
+                                        touched.name && errors.name ? "input-error" : touched.name && !errors.name ? "input-success" : ""
+                                    }`}
+                                />
+                                {touched.name && errors.name && (
+                                    <div className="error-message">⚠️ {errors.name}</div>
+                                )}
+                            </div>
+
+                            {/* Email */}
+                            <div className="form-group">
+                                <label htmlFor="email">
+                                    Email Address <span className="required">*</span>
+                                </label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    placeholder="student@example.com"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={`form-control ${
+                                        touched.email && errors.email ? "input-error" : touched.email && !errors.email ? "input-success" : ""
+                                    }`}
+                                />
+                                {touched.email && errors.email && (
+                                    <div className="error-message">⚠️ {errors.email}</div>
+                                )}
+                            </div>
+
+                            {/* Phone */}
+                            <div className="form-group">
+                                <label htmlFor="phone">
+                                    Phone Number (10 digits) <span className="required">*</span>
+                                </label>
+                                <input
+                                    id="phone"
+                                    type="tel"
+                                    name="phone"
+                                    maxLength="10"
+                                    placeholder="e.g. 9876543210"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={`form-control ${
+                                        touched.phone && errors.phone ? "input-error" : touched.phone && !errors.phone ? "input-success" : ""
+                                    }`}
+                                />
+                                {touched.phone && errors.phone && (
+                                    <div className="error-message">⚠️ {errors.phone}</div>
+                                )}
+                            </div>
+
+                            {/* Password */}
+                            <div className="form-group">
+                                <label htmlFor="password">
+                                    Password <span className="required">*</span>
+                                </label>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    placeholder="At least 8 chars, 1 uppercase, 1 digit, 1 special char"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={`form-control ${
+                                        touched.password && errors.password ? "input-error" : touched.password && !errors.password ? "input-success" : ""
+                                    }`}
+                                />
+                                {formData.password && (
+                                    <div className="strength-meter">
+                                        <div className="strength-bar-bg">
+                                            <div
+                                                className="strength-bar-fill"
+                                                style={{
+                                                    width: passwordStrength.width,
+                                                    backgroundColor: passwordStrength.color
+                                                }}
+                                            ></div>
+                                        </div>
+                                        <div className="strength-label">
+                                            <span style={{ color: "#718096" }}>Strength:</span>
+                                            <strong style={{ color: passwordStrength.color }}>
+                                                {passwordStrength.text}
+                                            </strong>
+                                        </div>
+                                    </div>
+                                )}
+                                {touched.password && errors.password && (
+                                    <div className="error-message">⚠️ {errors.password}</div>
+                                )}
+                            </div>
+
+                            {/* Confirm Password */}
+                            <div className="form-group">
+                                <label htmlFor="confirmPassword">
+                                    Confirm Password <span className="required">*</span>
+                                </label>
+                                <input
+                                    id="confirmPassword"
+                                    type="password"
+                                    name="confirmPassword"
+                                    placeholder="Re-enter your password"
+                                    value={formData.confirmPassword}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={`form-control ${
+                                        touched.confirmPassword && errors.confirmPassword ? "input-error" : touched.confirmPassword && !errors.confirmPassword ? "input-success" : ""
+                                    }`}
+                                />
+                                {touched.confirmPassword && errors.confirmPassword && (
+                                    <div className="error-message">⚠️ {errors.confirmPassword}</div>
+                                )}
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="btn-group">
+                                <button type="submit" className="btn btn-primary">
+                                    Register Student
+                                </button>
+                                <button type="button" className="btn btn-secondary" onClick={handleReset}>
+                                    Reset
+                                </button>
+                            </div>
+                        </form>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<StudentRegistrationForm />);
+    </script>
+</body>
+</html>

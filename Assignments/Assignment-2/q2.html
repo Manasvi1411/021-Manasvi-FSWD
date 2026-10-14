@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question 2 - React Event Handling</title>
+
+    <!-- React 18 & Babel CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: #2d3748;
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 15px;
+        }
+
+        header h1 {
+            color: #1a365d;
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .section-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .section-card h2 {
+            font-size: 18px;
+            color: #2b6cb0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Interactive Box */
+        .box-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .interactive-box {
+            width: 280px;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+        }
+
+        .interactive-box p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 6px;
+            font-weight: normal;
+        }
+
+        .box-message-display {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            background-color: #ebf8ff;
+            border: 1px solid #bee3f8;
+            color: #2b6cb0;
+            text-align: center;
+            font-size: 14px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Keyboard input area */
+        .key-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-field:focus {
+            border-color: #3182ce;
+        }
+
+        .key-display-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 18px;
+        }
+
+        .key-badge {
+            display: inline-block;
+            background: #edf2f7;
+            border: 1px solid #cbd5e0;
+            border-bottom: 3px solid #a0aec0;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d3748;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .key-details {
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        /* Form area */
+        .demo-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row input {
+            flex: 1;
+        }
+
+        .btn-submit {
+            background-color: #3182ce;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #2b6cb0;
+        }
+
+        .form-note {
+            font-size: 13px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function EventHandlingApp() {
+            // 1. Box State: Mouse Over & Mouse Out (color state), and Double Click message
+            const [isHovered, setIsHovered] = useState(false);
+            const [boxMessage, setBoxMessage] = useState("Double-click the box above to see an event message.");
+
+            // 2. Keyboard State: onKeyDown key capture
+            const [keyPressed, setKeyPressed] = useState("None");
+            const [keyCode, setKeyCode] = useState("-");
+
+            // 3. Form State: onSubmit with preventDefault()
+            const [feedbackInput, setFeedbackInput] = useState("");
+
+            // Handler: Mouse enter / hover
+            const handleMouseEnter = () => {
+                setIsHovered(true);
+            };
+
+            // Handler: Mouse leave / out
+            const handleMouseLeave = () => {
+                setIsHovered(false);
+            };
+
+            // Handler: Double click
+            const handleDoubleClick = () => {
+                const timestamp = new Date().toLocaleTimeString();
+                setBoxMessage(`🎉 Box double-clicked at ${timestamp}! (onDoubleClick triggered)`);
+            };
+
+            // Handler: onKeyDown
+            const handleKeyDown = (event) => {
+                setKeyPressed(event.key === " " ? "Space" : event.key);
+                setKeyCode(event.code || event.key);
+            };
+
+            // Handler: Form onSubmit with preventDefault()
+            const handleSubmit = (event) => {
+                // Prevent default page refresh
+                event.preventDefault();
+
+                if (!feedbackInput.trim()) {
+                    alert("⚠️ Please enter some text before submitting the form!");
+                    return;
+                }
+
+                // Show alert displaying submitted data
+                alert(
+                    `✅ Form Submitted Successfully!\n` +
+                    `Default page reload was prevented using e.preventDefault().\n\n` +
+                    `Input Value: "${feedbackInput}"`
+                );
+
+                // Clear input after submission
+                setFeedbackInput("");
+            };
+
+            // Dynamic Box Style based on mouse over / mouse out
+            const boxStyle = {
+                backgroundColor: isHovered ? "#38a169" : "#3182ce",
+                transform: isHovered ? "scale(1.04)" : "scale(1)"
+            };
+
+            return (
+                <div className="container">
+                    <header>
+                        <h1>React Event Handling Demo</h1>
+                        <p>Demonstrating mouseover, mouseout, double-click, onKeyDown, and form onSubmit with preventDefault()</p>
+                    </header>
+
+                    {/* Section 1: Box Mouse Over, Mouse Out & Double Click */}
+                    <div className="section-card">
+                        <h2>1. Mouse Events & Double Click on a Box</h2>
+                        <div className="box-wrapper">
+                            <div
+                                className="interactive-box"
+                                style={boxStyle}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                                onDoubleClick={handleDoubleClick}
+                            >
+                                <div>{isHovered ? "🟢 Mouse Over (Green)" : "🔵 Default State (Blue)"}</div>
+                                <p>(Hover over me to change color, Double-click me for message)</p>
+                            </div>
+
+                            <div className="box-message-display">
+                                <strong>Message:</strong>&nbsp;{boxMessage}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Section 2: Input Field with onKeyDown */}
+                    <div className="section-card">
+                        <h2>2. Key Press Detection (onKeyDown)</h2>
+                        <div className="key-input-group">
+                            <input
+                                type="text"
+                                className="input-field"
+                                placeholder="Type anywhere inside this box to test onKeyDown..."
+                                onKeyDown={handleKeyDown}
+                            />
+                            <div className="key-display-box">
+                                <span className="key-badge">{keyPressed}</span>
+                                <div className="key-details">
+                                    <strong>Last Key Pressed:</strong> {keyPressed}<br />
+                                    <small style={{ color: "#718096" }}>Code identifier: {keyCode}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Section 3: Form onSubmit with preventDefault() */}
+                    <div className="section-card">
+                        <h2>3. Form Submission with preventDefault()</h2>
+                        <form className="demo-form" onSubmit={handleSubmit}>
+                            <div className="form-row">
+                                <input
+                                    type="text"
+                                    className="input-field"
+                                    placeholder="Enter your message or feedback..."
+                                    value={feedbackInput}
+                                    onChange={(e) => setFeedbackInput(e.target.value)}
+                                />
+                                <button type="submit" className="btn-submit">
+                                    Submit Form
+                                </button>
+                            </div>
+                            <p className="form-note">
+                                💡 When you click Submit or press Enter, <code>e.preventDefault()</code> prevents browser reload and triggers a JavaScript alert.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<EventHandlingApp />);
+    </script>
+</body>
+</html>

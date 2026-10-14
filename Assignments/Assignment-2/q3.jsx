@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
 
-/**
- * Question 3:
- * React code to create a student registration form using controlled components
- * (name, email, phone, password, confirm password).
- * Validate every field (valid email, 10-digit phone, password strength),
- * display error messages below the fields, and show the submitted details on success.
- */
 export default function StudentRegistrationForm() {
-  // Controlled component state for each field
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,7 +14,7 @@ export default function StudentRegistrationForm() {
   const [touched, setTouched] = useState({});
   const [submittedData, setSubmittedData] = useState(null);
 
-  // Password strength calculator
+  
   const getPasswordStrength = (pwd) => {
     if (!pwd) return { text: '', color: '#e2e8f0' };
     let score = 0;
@@ -44,7 +37,7 @@ export default function StudentRegistrationForm() {
     }
   };
 
-  // Validation function for each field
+ 
   const validateField = (fieldName, value, allValues = formData) => {
     let error = '';
 
@@ -100,7 +93,7 @@ export default function StudentRegistrationForm() {
     return error;
   };
 
-  // Controlled component input change handler
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updated = { ...formData, [name]: value };
@@ -187,7 +180,7 @@ export default function StudentRegistrationForm() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} style={{ background: '#ffffff', padding: '25px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-          {/* Name */}
+          
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '5px' }}>Full Name *</label>
             <input
@@ -204,7 +197,7 @@ export default function StudentRegistrationForm() {
             )}
           </div>
 
-          {/* Email */}
+        
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '5px' }}>Email Address *</label>
             <input
@@ -221,7 +214,7 @@ export default function StudentRegistrationForm() {
             )}
           </div>
 
-          {/* Phone */}
+         
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '5px' }}>Phone Number (10 digits) *</label>
             <input
@@ -239,7 +232,7 @@ export default function StudentRegistrationForm() {
             )}
           </div>
 
-          {/* Password */}
+         
           <div style={{ marginBottom: '15px' }}>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '5px' }}>Password *</label>
             <input
@@ -261,7 +254,7 @@ export default function StudentRegistrationForm() {
             )}
           </div>
 
-          {/* Confirm Password */}
+         
           <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', fontWeight: '600', marginBottom: '5px' }}>Confirm Password *</label>
             <input
@@ -278,7 +271,7 @@ export default function StudentRegistrationForm() {
             )}
           </div>
 
-          {/* Buttons */}
+          
           <div style={{ display: 'flex', gap: '10px' }}>
             <button
               type="submit"

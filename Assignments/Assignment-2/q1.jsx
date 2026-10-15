@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 export default function EmployeeTable() {
-
   const [employees] = useState([
     { id: 101, name: 'Alice Johnson', department: 'Engineering', salary: 75000 },
     { id: 102, name: 'Bob Smith', department: 'Marketing', salary: 45000 },
@@ -13,82 +12,34 @@ export default function EmployeeTable() {
     { id: 108, name: 'Hannah Abbott', department: 'Engineering', salary: 56000 }
   ]);
 
-  const SALARY_THRESHOLD = 50000;
-
- 
-  const highSalaryStyle = {
-    backgroundColor: '#d1fae5',
-    color: '#065f46',
-    fontWeight: '600'
-  };
-
-  const normalSalaryStyle = {
-    backgroundColor: '#ffffff',
-    color: '#334155'
-  };
-
-  const badgeHighStyle = {
-    backgroundColor: '#059669',
-    color: '#ffffff',
-    padding: '4px 10px',
-    borderRadius: '20px',
-    fontSize: '12px',
-    fontWeight: '600'
-  };
-
-  const badgeNormalStyle = {
-    backgroundColor: '#e2e8f0',
-    color: '#475569',
-    padding: '4px 10px',
-    borderRadius: '20px',
-    fontSize: '12px',
-    fontWeight: '600'
-  };
-
   return (
-    <div style={{ maxWidth: '900px', margin: '40px auto', fontFamily: 'Segoe UI, sans-serif' }}>
-      <h2 style={{ textAlign: 'center', color: '#1a365d' }}>Employee Directory</h2>
-      <p style={{ textAlign: 'center', color: '#64748b' }}>
-        Highlighting employees with salary &gt; ₹50,000 using conditional styling
-      </p>
-
+    <div style={{ maxWidth: '800px', margin: '40px auto', fontFamily: 'Arial, sans-serif' }}>
+      <h2 style={{ textAlign: 'center' }}>Employee Details</h2>
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
-          <tr style={{ backgroundColor: '#1e293b', color: '#ffffff' }}>
-            <th style={{ padding: '12px', textAlign: 'left' }}>ID</th>
-            <th style={{ padding: '12px', textAlign: 'left' }}>Name</th>
-            <th style={{ padding: '12px', textAlign: 'left' }}>Department</th>
-            <th style={{ padding: '12px', textAlign: 'left' }}>Salary (₹)</th>
-            <th style={{ padding: '12px', textAlign: 'left' }}>Status</th>
+          <tr style={{ backgroundColor: '#2c3e50', color: 'white' }}>
+            <th style={{ border: '1px solid #ccc', padding: '10px' }}>ID</th>
+            <th style={{ border: '1px solid #ccc', padding: '10px' }}>Name</th>
+            <th style={{ border: '1px solid #ccc', padding: '10px' }}>Department</th>
+            <th style={{ border: '1px solid #ccc', padding: '10px' }}>Salary</th>
           </tr>
         </thead>
         <tbody>
-          
-          {employees.map((employee) => {
-            const isAbove50k = employee.salary > SALARY_THRESHOLD;
-
-            return (
-              <tr
-                key={employee.id}
-                style={{
-                  ...(isAbove50k ? highSalaryStyle : normalSalaryStyle),
-                  borderBottom: '1px solid #e2e8f0'
-                }}
-              >
-                <td style={{ padding: '12px' }}>#{employee.id}</td>
-                <td style={{ padding: '12px' }}>{employee.name}</td>
-                <td style={{ padding: '12px' }}>{employee.department}</td>
-                <td style={{ padding: '12px' }}>₹{employee.salary.toLocaleString()}</td>
-                <td style={{ padding: '12px' }}>
-                  {isAbove50k ? (
-                    <span style={badgeHighStyle}>High Salary (&gt; 50k)</span>
-                  ) : (
-                    <span style={badgeNormalStyle}>Standard</span>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
+          {employees.map((emp) => (
+            <tr
+              key={emp.id}
+              style={{
+                backgroundColor: emp.salary > 50000 ? '#d4edda' : 'white',
+                fontWeight: emp.salary > 50000 ? 'bold' : 'normal',
+                textAlign: 'center'
+              }}
+            >
+              <td style={{ border: '1px solid #ccc', padding: '10px' }}>{emp.id}</td>
+              <td style={{ border: '1px solid #ccc', padding: '10px' }}>{emp.name}</td>
+              <td style={{ border: '1px solid #ccc', padding: '10px' }}>{emp.department}</td>
+              <td style={{ border: '1px solid #ccc', padding: '10px' }}>Rs. {emp.salary}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

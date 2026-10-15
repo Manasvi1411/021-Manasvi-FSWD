@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Handling Demo</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+        .container {
+            width: 500px;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .box {
+            width: 250px;
+            height: 120px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function EventHandling() {
+            const [boxColor, setBoxColor] = useState("lightblue");
+            const [message, setMessage] = useState("");
+            const [keyPressed, setKeyPressed] = useState("");
+            const [formData, setFormData] = useState("");
+
+            const handleMouseOver = () => {
+                setBoxColor("coral");
+            };
+
+            const handleMouseOut = () => {
+                setBoxColor("lightblue");
+            };
+
+            const handleDoubleClick = () => {
+                setMessage("Box was double clicked!");
+            };
+
+            const handleKeyDown = (e) => {
+                setKeyPressed(e.key);
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                alert("Form submitted successfully with input: " + formData);
+                setFormData("");
+            };
+
+            return (
+                <div className="container">
+                    <h2>React Event Handling</h2>
+
+                    <div className="section">
+                        <h3>Mouse Events & Double Click</h3>
+                        <div
+                            className="box"
+                            style={{ backgroundColor: boxColor, color: boxColor === "lightblue" ? "#333" : "white" }}
+                            onMouseOver={handleMouseOver}
+                            onMouseOut={handleMouseOut}
+                            onDoubleClick={handleDoubleClick}
+                        >
+                            Hover or Double Click Me
+                        </div>
+                        {message && <p style={{ color: "green", fontWeight: "bold" }}>{message}</p>}
+                    </div>
+
+                    <div className="section">
+                        <h3>Key Down Event</h3>
+                        <input
+                            type="text"
+                            placeholder="Type here..."
+                            onKeyDown={handleKeyDown}
+                        />
+                        <p>Key Pressed: <strong>{keyPressed}</strong></p>
+                    </div>
+
+                    <div className="section">
+                        <h3>Form Submit Event</h3>
+                        <form onSubmit={handleSubmit}>
+                            <input
+                                type="text"
+                                placeholder="Enter text..."
+                                value={formData}
+                                onChange={(e) => setFormData(e.target.value)}
+                            />
+                            <br />
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<EventHandling />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Registration Form</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 30px;
+        }
+        .form-container {
+            width: 450px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .details-box {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f4fd;
+            border: 1px solid #b8daff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function StudentRegistration() {
+            const [formData, setFormData] = useState({
+                name: "",
+                email: "",
+                phone: "",
+                password: "",
+                confirmPassword: ""
+            });
+
+            const [errors, setErrors] = useState({});
+            const [submittedData, setSubmittedData] = useState(null);
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData({
+                    ...formData,
+                    [name]: value
+                });
+            };
+
+            const validate = () => {
+                let err = {};
+
+                if (!formData.name.trim()) {
+                    err.name = "Name is required";
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!formData.email) {
+                    err.email = "Email is required";
+                } else if (!emailRegex.test(formData.email)) {
+                    err.email = "Invalid email format";
+                }
+
+                const phoneRegex = /^[0-9]{10}$/;
+                if (!formData.phone) {
+                    err.phone = "Phone number is required";
+                } else if (!phoneRegex.test(formData.phone)) {
+                    err.phone = "Phone must be exactly 10 digits";
+                }
+
+                const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                if (!formData.password) {
+                    err.password = "Password is required";
+                } else if (formData.password.length < 8) {
+                    err.password = "Password must be at least 8 characters";
+                } else if (!strongPasswordRegex.test(formData.password)) {
+                    err.password = "Password must contain uppercase, lowercase, number, and special character";
+                }
+
+                if (!formData.confirmPassword) {
+                    err.confirmPassword = "Confirm password is required";
+                } else if (formData.confirmPassword !== formData.password) {
+                    err.confirmPassword = "Passwords do not match";
+                }
+
+                return err;
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                const validationErrors = validate();
+                setErrors(validationErrors);
+
+                if (Object.keys(validationErrors).length === 0) {
+                    setSubmittedData(formData);
+                } else {
+                    setSubmittedData(null);
+                }
+            };
+
+            return (
+                <div className="form-container">
+                    <h2>Student Registration Form</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label>Name:</label>
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                            />
+                            {errors.name && <div className="error">{errors.name}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label>Email:</label>
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                            {errors.email && <div className="error">{errors.email}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label>Phone Number:</label>
+                            <input
+                                type="text"
+                                name="phone"
+                                maxLength="10"
+                                value={formData.phone}
+                                onChange={handleChange}
+                            />
+                            {errors.phone && <div className="error">{errors.phone}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label>Password:</label>
+                            <input
+                                type="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                            {errors.password && <div className="error">{errors.password}</div>}
+                        </div>
+
+                        <div className="form-group">
+                            <label>Confirm Password:</label>
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                            />
+                            {errors.confirmPassword && <div className="error">{errors.confirmPassword}</div>}
+                        </div>
+
+                        <button type="submit">Register</button>
+                    </form>
+
+                    {submittedData && (
+                        <div className="details-box">
+                            <h3 style={{ color: "#0c5460", marginTop: 0 }}>Submitted Details</h3>
+                            <p><strong>Name:</strong> {submittedData.name}</p>
+                            <p><strong>Email:</strong> {submittedData.email}</p>
+                            <p><strong>Phone:</strong> {submittedData.phone}</p>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<StudentRegistrationForm />);
+    </script>
+</body>
+</html>

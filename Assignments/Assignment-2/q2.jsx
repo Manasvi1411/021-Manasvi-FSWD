@@ -1,128 +1,88 @@
 import React, { useState } from 'react';
 
 export default function EventHandlingDemo() {
-  
-  const [isHovered, setIsHovered] = useState(false);
-  const [boxMessage, setBoxMessage] = useState('Double-click the box above to see an event message.');
+  const [boxColor, setBoxColor] = useState('lightblue');
+  const [message, setMessage] = useState('');
+  const [keyPressed, setKeyPressed] = useState('');
+  const [formData, setFormData] = useState('');
 
- 
-  const [keyPressed, setKeyPressed] = useState('None');
-  const [keyCode, setKeyCode] = useState('-');
-
- 
-  const [feedbackInput, setFeedbackInput] = useState('');
-
-  
-  const handleMouseEnter = () => {
-    setIsHovered(true);
+  const handleMouseOver = () => {
+    setBoxColor('coral');
   };
 
- 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
+  const handleMouseOut = () => {
+    setBoxColor('lightblue');
   };
 
-  
   const handleDoubleClick = () => {
-    const timestamp = new Date().toLocaleTimeString();
-    setBoxMessage(`🎉 Box double-clicked at ${timestamp}! (onDoubleClick event triggered)`);
+    setMessage('Box was double clicked!');
   };
 
- 
-  const handleKeyDown = (event) => {
-    setKeyPressed(event.key === ' ' ? 'Space' : event.key);
-    setKeyCode(event.code || event.key);
+  const handleKeyDown = (e) => {
+    setKeyPressed(e.key);
   };
 
-  
-  const handleSubmit = (event) => {
-    
-    event.preventDefault();
-
-    if (!feedbackInput.trim()) {
-      alert('⚠️ Please enter some text before submitting the form!');
-      return;
-    }
-
-   
-    alert(
-      `✅ Form Submitted Successfully!\n` +
-      `Default page reload was prevented using e.preventDefault().\n\n` +
-      `Input Value: "${feedbackInput}"`
-    );
-
-   
-    setFeedbackInput('');
-  };
-
-  const boxStyle = {
-    width: '280px',
-    height: '150px',
-    backgroundColor: isHovered ? '#38a169' : '#3182ce',
-    color: '#ffffff',
-    borderRadius: '12px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: '0 auto',
-    cursor: 'pointer',
-    userSelect: 'none',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-    padding: '10px',
-    textAlign: 'center'
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert('Form submitted successfully with input: ' + formData);
+    setFormData('');
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '30px auto', fontFamily: 'Segoe UI, sans-serif' }}>
-      <h2 style={{ textAlign: 'center', color: '#1a365d' }}>React Event Handling Demo</h2>
+    <div style={{ maxWidth: '500px', margin: '30px auto', background: 'white', padding: '25px', borderRadius: '8px', boxShadow: '0 0 10px rgba(0,0,0,0.1)', textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
+      <h2>React Event Handling</h2>
 
-      {}
-      <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '20px', margin: '20px 0' }}>
-        <h3 style={{ color: '#2b6cb0', marginBottom: '15px' }}>1. Mouse Hover & Double Click Box</h3>
+      <div style={{ margin: '20px 0', padding: '15px', borderBottom: '1px solid #eee' }}>
+        <h3>Mouse Events & Double Click</h3>
         <div
-          style={boxStyle}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          style={{
+            width: '250px',
+            height: '120px',
+            margin: '20px auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: boxColor === 'lightblue' ? '#333' : 'white',
+            fontWeight: 'bold',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            backgroundColor: boxColor,
+            transition: 'background-color 0.3s'
+          }}
+          onMouseOver={handleMouseOver}
+          onMouseOut={handleMouseOut}
           onDoubleClick={handleDoubleClick}
         >
-          <strong>{isHovered ? '🟢 Mouse Over (Green)' : '🔵 Default State (Blue)'}</strong>
-          <span style={{ fontSize: '12px', marginTop: '6px' }}>Hover to change color | Double click for message</span>
+          Hover or Double Click Me
         </div>
-        <div style={{ marginTop: '15px', padding: '10px', background: '#ebf8ff', border: '1px solid #bee3f8', borderRadius: '6px', textAlign: 'center', color: '#2b6cb0' }}>
-          <strong>Message:</strong> {boxMessage}
-        </div>
+        {message && <p style={{ color: 'green', fontWeight: 'bold' }}>{message}</p>}
       </div>
 
-      {}
-      <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '20px', margin: '20px 0' }}>
-        <h3 style={{ color: '#2b6cb0', marginBottom: '15px' }}>2. Key Press Detection (onKeyDown)</h3>
+      <div style={{ margin: '20px 0', padding: '15px', borderBottom: '1px solid #eee' }}>
+        <h3>Key Down Event</h3>
         <input
           type="text"
-          placeholder="Type here to test onKeyDown..."
+          placeholder="Type here..."
           onKeyDown={handleKeyDown}
-          style={{ width: '100%', padding: '10px 14px', borderRadius: '6px', border: '1px solid #cbd5e0', fontSize: '15px' }}
+          style={{ width: '80%', padding: '10px', margin: '10px 0', border: '1px solid #ccc', borderRadius: '4px' }}
         />
-        <div style={{ marginTop: '10px', padding: '10px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
-          <strong>Last Key Pressed:</strong> <span style={{ fontFamily: 'monospace', fontWeight: 'bold' }}>{keyPressed}</span> (Code: {keyCode})
-        </div>
+        <p>Key Pressed: <strong>{keyPressed}</strong></p>
       </div>
 
-      {}
-      <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '20px', margin: '20px 0' }}>
-        <h3 style={{ color: '#2b6cb0', marginBottom: '15px' }}>3. Form onSubmit with preventDefault()</h3>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '10px' }}>
+      <div style={{ margin: '20px 0', padding: '15px' }}>
+        <h3>Form Submit Event</h3>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Enter feedback or text..."
-            value={feedbackInput}
-            onChange={(e) => setFeedbackInput(e.target.value)}
-            style={{ flex: 1, padding: '10px 14px', borderRadius: '6px', border: '1px solid #cbd5e0', fontSize: '15px' }}
+            placeholder="Enter text..."
+            value={formData}
+            onChange={(e) => setFormData(e.target.value)}
+            style={{ width: '80%', padding: '10px', margin: '10px 0', border: '1px solid #ccc', borderRadius: '4px' }}
           />
+          <br />
           <button
             type="submit"
-            style={{ backgroundColor: '#3182ce', color: '#ffffff', border: 'none', padding: '10px 20px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold' }}
+            style={{ padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
           >
             Submit
           </button>
